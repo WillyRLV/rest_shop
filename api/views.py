@@ -1,9 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Material
-from .serializers import MaterialSerializer
-from .models import Funcion
-from .serializers import FuncionSerializer
+from .models import Material, Funcion, Producto
+from .serializers import MaterialSerializer,FuncionSerializer, ProductoSerializer, MaterialProductosSerializer
+
 
 
 
@@ -35,6 +34,28 @@ class FuncionView(APIView):
         context = {
             'ok':True,
             'content':serFuncion.data
+        }
+
+        return Response(context)
+
+class ProductoView(APIView):
+    def get (self,request):
+        dataProducto = Producto.objects.all()
+        serProducto = ProductoSerializer(dataProducto,many=True)
+        context = {
+            'ok':True,
+            'content':serProducto.data
+        }
+
+        return Response(context)
+
+class MaterialProductosView(APIView):
+    def get (self,request,material_id):
+        dataMaterial = Material.objects.get(pk=material_id)
+        serMaterialProductos = MaterialProductosSerializer(dataMaterial)
+        context = {
+            'ok':True,
+            'content':serMaterialProductos.data
         }
 
         return Response(context)
