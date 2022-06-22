@@ -1,5 +1,6 @@
 from django.db import models
 from cloudinary.models import CloudinaryField
+from datetime import datetime
 
 # Create your models here.
 class Material (models.Model):
@@ -22,10 +23,15 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=45)
     precio = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     cantidad = models.IntegerField(default=0)
-    material = models.ForeignKey (Material, on_delete=models.RESTRICT)
+    material = models.ForeignKey (Material,related_name='Productos',
+                                    to_field='material_id',on_delete=models.RESTRICT,
+                                    db_column='material_id',verbose_name='material')
     funcion = models.ForeignKey (Funcion, on_delete=models.RESTRICT)
     producto_img = CloudinaryField('image', default='')
-
+    url = models.TextField()
+    rango= models.CharField(max_length=50)
+    dimension=models.CharField(max_length=50)
+    fecha_creada=models.DateTimeField(default=datetime.now)
     
     def __str__(self):
             return self.nombre
@@ -55,24 +61,22 @@ class Carrito(models.Model):
     cliente = models.ForeignKey(Cliente,on_delete=models.RESTRICT)  
 
     def __str__(self):
-            return self.cantidad
+            return self.producto.nombre
 
 class Pedido(models.Model):
     idpedido = models.AutoField(primary_key=True) 
     fecha_pedido = models.DateTimeField(auto_now_add=True) 
     direccion_entrega = models.CharField(max_length=200) 
-    # carrito_id = models.ForeignKey(Carrito,related_name='pedido',to_field='idcarrito',
-    #                             on_delete=models.RESTRICT,db_column='carrito_id',
-    #                             verbose_name='Carrito')
+    carrito_detalle = models.ForeignKey(Carrito, on_delete=models.RESTRICT)
     
     def __str__(self):
-            return self.fecha_pedido
+            return self.direccion_entrega
 
 class Entrega(models.Model):
     identrega = models.AutoField(primary_key=True)
-    fecha_entrega = models.DateField(default='', null=False) 
-    entrega_img = CloudinaryField('image', default='')
+    fecha_entrega = models.DateField(null=True, verbose_name='FechadeEntrega') 
+    entrega_img = CloudinaryField('image', default='',)
     # pedido = models.ForeignKey(Pedido,on_delete=models.RESTRICT)
 
-    def __str__(self):
-                return self.fecha_entrega
+    # def __str__(self):
+    #             return self.fecha_entrega
