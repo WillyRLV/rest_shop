@@ -9,4 +9,5 @@ urlpatterns = [
     path('funcion', views.FuncionView.as_view()),
     path('producto', views.ProductoView.as_view()),
     path('material/<int:material_id>/productos', views.MaterialProductosView.as_view()),
+    path('contacto', views.ContactoView.as_view()),
 ]

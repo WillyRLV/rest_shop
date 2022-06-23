@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Material, Funcion, Producto
-from .serializers import MaterialSerializer,FuncionSerializer, ProductoSerializer, MaterialProductosSerializer
+from .models import Material, Funcion, Producto, Contacto
+from .serializers import MaterialSerializer,FuncionSerializer, ProductoSerializer, MaterialProductosSerializer, ContactoSerializer
 
 
 
@@ -59,3 +59,30 @@ class MaterialProductosView(APIView):
         }
 
         return Response(context)
+
+
+class ContactoView(APIView):
+    def get (self,request):
+        dataContacto = Contacto.objects.all()
+        serContacto = ContactoSerializer(dataContacto,many=True)
+        context = {
+            'ok':True,
+            'content':serContacto.data
+        }
+        
+        return Response(context)
+
+    def post (self,request):
+        serContacto = ContactoSerializer(data=request.data)
+        
+        serContacto.is_valid(raise_exception=True)
+        serContacto.save()
+        
+        context = {
+            'ok':True,
+            'content':serContacto.data
+        }
+        
+        return Response(context)
+
+         

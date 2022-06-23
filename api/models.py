@@ -80,3 +80,15 @@ class Entrega(models.Model):
 
     # def __str__(self):
     #             return self.fecha_entrega
+
+    # Contacto 
+class Contacto (models.Model):
+    nombre = models.CharField(max_length=100)
+    correo = models.CharField(max_length=100) 
+    asunto = models.CharField(max_length=100)
+    mensaje = models.TextField()
+
+    def __str__(self):
+            return self.asunto
+
+            

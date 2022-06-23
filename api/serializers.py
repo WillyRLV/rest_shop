@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-from .models import (Material, Funcion, Producto)
+from .models import (Material, Funcion, Producto, Contacto)
 
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta: 
@@ -23,3 +23,19 @@ class MaterialProductosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Material
         fields = ['material_id','nombre','Productos']
+
+
+#Contacto
+
+class ContactoSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Contacto
+        fields = '__all__'
+
+
+class ContactoSerializerPost(serializers.ModelSerializer):
+    class Meta:
+        model = Contacto
+        fields = ['nombre','correo','asunto','mensaje']
+
+    
